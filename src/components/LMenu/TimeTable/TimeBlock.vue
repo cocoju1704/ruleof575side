@@ -4,17 +4,7 @@
       {{ this.timeBlockData.content }}
     </div>
   </div>
-  <button class="send-btn" @click="clickEvent" v-show='this.timeBlockData.blockKind == "sendBtn"' >
-    <div class="svg-wrapper-1">
-      <div class="svg-wrapper">
-        <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
-          <path fill="none" d="M0 0h24v24H0z"></path>
-          <path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-        </svg>
-      </div>
-    </div>
-    <span class="span">찾기</span>
-  </button> 
+  <div class = "time-block" :style="blockstyle" @click="clickEvent" v-show='this.timeBlockData.blockKind == "sendBtn"'>모두 <br> 선택</div>
 </template>
   
   <script>
@@ -23,11 +13,11 @@
     props: ["timeBlockData"],
     computed: {
       blockstyle() {
-        let color
+        let color, height
         switch (this.timeBlockData.blockKind) {
           case "block":
             if (this.timeBlockData.isSelected) {
-              color = `#bdbdbd`
+              color = `#49c282`
             }
             else {
               color = `#f0f0f0`
@@ -42,13 +32,25 @@
           case "hourBlock":
             color = `#e0e0e0`
             break;
+          case "sendBtn":
+            color = `#e0e0e0`
+            break;
           default:
             color = `#ff00d6`
             break;
         }
-        return {
-          '--height' : `${(this.timeBlockData.end - this.timeBlockData.start) * 96}px`,
-          '--color' : color
+        if (this.timeBlockData.blockKind == "sendBtn")
+        {
+          return {
+            '--height' : `48px`,
+            '--color' : color
+          }
+        }
+        else {
+          return {
+            '--height' : `${(this.timeBlockData.end - this.timeBlockData.start) * 96}px`,
+            '--color' : color
+          }
         }
       }
     },
@@ -61,6 +63,7 @@
         if(!isLogined) {
           return
         }
+        this.$store.commit("addSelectedBlockCount");
 
         switch(this.timeBlockData.blockKind) {
           case "block":
@@ -99,21 +102,18 @@
             }
             break
           case "sendBtn":
-            timeLines = this.$store.getters.getTimeLines
-            this.$store.commit("clearSelectedTimes")
-
-            for(let x in timeLines){
-              timeLines[x].forEach(y=> {
-                if(y.blockKind == "block" && y.isSelected) {
-                  this.$store.commit("addSelectedTimes", {day: x, data: y})
-                }
-              })
-            }
-            this.$store.commit("clearRecommList")
-            await this.$store.dispatch("fetchRecommList")
-            this.$store.dispatch("changeScreen", 2)
-
-            break
+            this.timeBlockData.isSelected = !this.timeBlockData.isSelected
+              timeLines = this.$store.getters.getTimeLines
+              for(let x in timeLines){
+                //console.log(x)
+                timeLine = timeLines[x]
+                timeLine.forEach(y => {
+                      if(this.timeBlockData.isSelected != y.isSelected && y.blockKind =="block") {
+                    y.isSelected = this.timeBlockData.isSelected
+                  }
+                })
+              }
+              break
 
           default: 
            alert("error")
@@ -128,36 +128,6 @@
   <style lang="sass">
   @import '../../../../variables'
 
-  .send-btn
-    font-size: 13px 
-    background: $green
-    color: white 
-    display: flex 
-    align-items: center 
-    border: none 
-    border-radius: 4px 
-    overflow: hidden
-    height: 48px
-    width: 100%
-    transition: all 0.2s
-    .span
-      display: block 
-      margin-left: 0.3em 
-      transition: all 0.3s ease-in-out 
-    .svg
-      display: block 
-      transform-origin: center center 
-      transition: transform 0.3s ease-in-out 
-  .send-btn:hover
-    .svg-wrapper
-      animation: fly-1 0.6s ease-in-out infinite alternate 
-    .svg
-      transform: translateX(1.2em) rotate(45deg) scale(1.1) 
-    .span
-      transform: translateX(5em)
-  .send-btn:active
-    transform: scale(0.95)
-  
   .time-block
     align-items: center
     background-color: var(--color)
@@ -174,7 +144,7 @@
     
   .time-block:hover
     transform: scale(1.05)
-    background-color: $green
+    background-color: #c0c0c0
   .time-block:active
     transform: scale(0.9)
 

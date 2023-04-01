@@ -6,8 +6,8 @@ import axios from "axios"
 export default createStore({
   state: {
     isLogined: false,
-    userInfo: {stuId: null, userName: null, major: null, grade: null},
-
+    //userInfo: {stuId: null, userName: null, major: null, grade: null},
+    userInfo: {stuId: "2018007947", userName: "김병주", major: "컴퓨터소프트웨어학부", grade: "3학년"},
     gradInfo : null,
     isChanged: false,
     isOnlyInGradShow: true,
@@ -77,7 +77,8 @@ export default createStore({
     "에너지공학과","연극영화학과","영어교육과","영어영문학과","원자력공학과","유기나노공학과","융합전자공학부","응용미술교육과",
     "응용시스템전공","의류학과","의예과","의학과","자원환경공학과","작곡과","전기공학전공","정보시스템학과","정보융합전공",
     "정책학과","정치외교학과","중어중문학과","철학과","체육학과","컴퓨터소프트웨어학부","파이낸스경영학과",
-    "피아노과","행정학과","화학공학과","화학과"]
+    "피아노과","행정학과","화학공학과","화학과"],
+    selectedBlockCount : 0,
   },
   
   getters: {
@@ -155,7 +156,11 @@ export default createStore({
     },
     getCustomMajor(state) {
       return state.customMajor
+    },
+    getSelectedBlockCount(state){
+      return state.selectedBlockCount
     }
+    
 
   },
   mutations: {
@@ -237,7 +242,9 @@ export default createStore({
         state.lecList.splice(lecIdx, 1);
       }
     },
-
+    addSelectedBlockCount(state) {
+      state.selectedBlockCount++;
+    },
     setGradList(state, gradRecList){
 
       try{
@@ -371,6 +378,14 @@ export default createStore({
       state.selectedTimes['수'].length = 0
       state.selectedTimes['목'].length = 0
       state.selectedTimes['금'].length = 0
+    },
+    getIfSelectedTimesIsEmpty(state) {
+      if (state.selectedTimes['월'].length == 0 
+          && state.selectedTimes['화'].length == 0 
+          && state.selectedTimes['수'].length == 0 
+          && state.selectedTimes['목'].length == 0 
+          && state.selectedTimes['금'].length == 0) 
+      return true
     },
 
 
@@ -646,7 +661,9 @@ export default createStore({
     setUpCustomMajor(state, custom) {
       state.customMajor = custom
     },
-
+    addSelectedBlockCount(state) {
+      state.selectedBlockCount++;
+    }
   },
 
 
@@ -700,10 +717,10 @@ export default createStore({
     },
 
     async loginReq(context) {
-        const response = await chrome.runtime.sendMessage({type: "extension", param: "login_info"});
-        //console.log(response.stuData, response.hackData)
-        context.commit("setUserInfo", response.stuData)
-        context.commit("setHackInfo", response.hackData)
+        // const response = await chrome.runtime.sendMessage({type: "extension", param: "login_info"});
+        // //console.log(response.stuData, response.hackData)
+        // context.commit("setUserInfo", response.stuData)
+        // context.commit("setHackInfo", response.hackData)
     },
 
     async changeScreen(context, screenNum) {      
