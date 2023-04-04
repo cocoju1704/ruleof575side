@@ -4,7 +4,6 @@
     <RMenu/>
     <LecDetailsModal class="left-modal" :modalData = 'this.$store.getters.getLecDetailsLeft' v-if="onLeftModal" v-on:modal-close="leftModalClose"/>
     <LecDetailsModal class="right-modal" :modalData = 'this.$store.getters.getLecDetailsRight' v-if="onRightModal" v-on:modal-close="rightModalClose"/>
-    <SearchModal class="search-modal" v-if ="onSearchModal" v-on:modal-close="searchModalClose"></SearchModal>
     <CustomModal class="custom-modal" v-if ="onCustomModal" v-on:modal-close="customModalClose"></CustomModal>
   </div>
 </template>
@@ -14,7 +13,6 @@
 import LMenu from "./components/LMenu/LMenu";
 import RMenu from "./components/RMenu/RMenu";
 import LecDetailsModal from "./components/LecDetailsModal";
-import SearchModal from "./components/SearchModal";
 import CustomModal from "./components/CustomModal";
 import { h } from 'vue'
 
@@ -24,7 +22,6 @@ export default {
     LMenu,
     RMenu,
     LecDetailsModal,
-    SearchModal,
     CustomModal,
   },
   computed:{
@@ -34,9 +31,7 @@ export default {
     onRightModal(){
       return this.$store.getters.getLecDetailsRight.state
     },
-    onSearchModal(){
-      return this.$store.getters.getSearchModal.state
-    },
+
     onCustomModal(){
       return this.$store.getters.getCustomModal.state
     }
@@ -48,9 +43,7 @@ export default {
     rightModalClose(){
       this.$store.getters.getLecDetailsRight.state = false
     },
-    searchModalClose(){
-      this.$store.getters.getSearchModal.state = false
-    },
+
     customModalClose(){
       this.$store.getters.getCustomModal.state = false
     },

@@ -73,6 +73,7 @@ export default {
 
 .search-image-box-btn:hover
   transform: scale(1.1)
+  cursor: pointer
 .search-image-box-btn:active
   transform: scale(0.9)
 </style>

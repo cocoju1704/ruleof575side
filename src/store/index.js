@@ -7,7 +7,7 @@ export default createStore({
   state: {
     isLogined: false,
     //userInfo: {stuId: null, userName: null, major: null, grade: null},
-    userInfo: {stuId: "2018007947", userName: "김병주", major: "컴퓨터소프트웨어학부", grade: "3학년"},
+    userInfo: {stuId: "2018007947", userName: "김병주", major: "컴퓨터소프트웨어학부", grade: "4"},
     gradInfo : null,
     isChanged: false,
     isOnlyInGradShow: true,
@@ -26,7 +26,6 @@ export default createStore({
     
     lecDetailsLeft: {state: false},
     lecDetailsRight: {state: false},
-    searchModal: {state: false},
     customModal: {state: false, list:[]},
 
 
@@ -136,9 +135,7 @@ export default createStore({
     getColor(state) {
       return state.colorList[state.colorIdx]
     },
-    getSearchModal(state){
-      return state.searchModal
-    },
+
     getHackData(state){
       return state.hackData
     },
@@ -379,7 +376,7 @@ export default createStore({
       state.selectedTimes['목'].length = 0
       state.selectedTimes['금'].length = 0
     },
-    getIfSelectedTimesIsEmpty(state) {
+    getIfSelectedTimes(state) {
       if (state.selectedTimes['월'].length == 0 
           && state.selectedTimes['화'].length == 0 
           && state.selectedTimes['수'].length == 0 
@@ -517,22 +514,6 @@ export default createStore({
         console.log(err)
       }
     },
-
-    setSearchModal(state)
-    {
-      try{
-        if(!state.searchModal["state"]){
-          state.searchModal["state"] = true
-        }
-        else{
-          state.searchModal["state"] = false
-        }
-      }
-      catch(err){
-        console.log(err)
-      }
-    },
-    
 
 
     addShadowLec(state, lecData){
@@ -721,6 +702,25 @@ export default createStore({
         // //console.log(response.stuData, response.hackData)
         // context.commit("setUserInfo", response.stuData)
         // context.commit("setHackInfo", response.hackData)
+    },
+    async updateLecList(context) {
+      if(context.getters.getIsChanged){
+        try {
+          let data = []
+          let lecList = context.getters.getLecList
+          let stuId = context.getters.getStuId
+          var i = 0
+          for(let lec of lecList){
+            data.push({수업번호: lec.수업번호, isInTable : lec.isInTable, order: i})
+            i++
+          }
+          await axios.post('https://ruleof.datasesang.store/list/update', {list: data, stu_id: stuId})
+          context.commit('setIsChanged', false)
+        }
+        catch(err) {
+            console.log(err)
+        }
+      }
     },
 
     async changeScreen(context, screenNum) {      

@@ -38,6 +38,7 @@ export default {
   border-top-right-radius: 15px
 .rmenu-tab:hover
   transform: scale(1.1)
+  cursor: pointer
 .rmenu-tab:active
   transform: scale(0.9)
 

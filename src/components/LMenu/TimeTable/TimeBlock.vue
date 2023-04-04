@@ -144,6 +144,7 @@
     
   .time-block:hover
     transform: scale(1.05)
+    cursor: pointer
     background-color: #c0c0c0
   .time-block:active
     transform: scale(0.9)

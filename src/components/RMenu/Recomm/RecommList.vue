@@ -222,6 +222,7 @@ export default {
   left: 92%
 .show-button-recommend:hover
   transform: scale(1.1)
+  cursor: pointer
 .show-button-recommend:active
   transform: rotate(90deg) scale(0.7)
 
@@ -235,6 +236,7 @@ export default {
   left: 92%
 .hide-button-recommend:hover
   transform: scale(1.1)
+  cursor: pointer
 .hide-button-recommend:active
   transform: rotate(-90deg) scale(0.7)
 

@@ -171,6 +171,7 @@ export default {
 .select-ge-custom:hover,
 .select-grade-custom:hover
   transform: scale(1.1)
+  cursor: pointer
   opacity: 0.6
 
 .major-title

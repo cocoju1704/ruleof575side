@@ -1,7 +1,8 @@
 <template>
   <div class="time-table-cart">
     <button class="send-btn" :style = "blockstyle" @click="clickEvent">
-    <span class="span">원하는 시간대 선택 후 내 시간표에 맞는 교양 추천받기</span>
+    <div class = "spacing-2"></div>
+    <span class="span">선택한 시간대에 맞는 교양 추천받기</span>
     <div class="svg-wrapper-1">
       <div class="svg-wrapper">
         <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
@@ -143,19 +144,24 @@ export default {
     margin-left: 0.3em 
     transition: all 0.3s ease-in-out 
     text-align: center
-    width: 90%
+    width: 60%
   .svg
     display: block 
+    transform: rotate(45deg)
     transform-origin: center center 
     transition: transform 0.3s ease-in-out 
 .send-btn:hover
+  cursor: pointer
   .svg-wrapper
     animation: fly-1 0.6s ease-in-out infinite alternate
     transform: scale(1.2)
   .svg
-    transform: translateX(2em) rotate(45deg) scale(1.2)
+    transform: translateX(10em) rotate(45deg) scale(1.2)
   .span
     transform: scale(1.2)
 .send-btn:active
-  transform: scale(0.95)
+  transform: scale(0.90)
+
+.spacing-2
+  width: 15%
 </style>

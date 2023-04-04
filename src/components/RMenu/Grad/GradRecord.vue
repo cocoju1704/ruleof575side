@@ -25,23 +25,21 @@ export default {
       let color
       if (this.gradData.이수명 != "이수명")
       {
-        if (this.gradData.변동 > 0)
+        if (this.gradData.이수여부 == "N")
         {
-          if (this.gradData.이수여부 == "N")
+          if (this.gradData.변동 > 0)
           {
-            color = "#FFCCCC"
+              color = "#99FF99"
           }
           else
-            color = "#99FF99"
+            color = "$purple"
         }
-        else
-        {
-          if (this.gradData.이수여부 == "Y")
-            color = "#E0E0E0"
-          else
-            color = "#purple"
+        else{
+          if (this.gradData.변동 > 0) color = "#FFCCCC"
+          else color = "#E0E0E0"
         }
-      }
+      }      
+
       else color = "purple"
       return color
     }

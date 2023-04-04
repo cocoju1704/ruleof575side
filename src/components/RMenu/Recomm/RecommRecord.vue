@@ -65,6 +65,7 @@ export default {
 .recomm-list-record:hover
   transform: scale(1.05)
   background-color: $green
+  cursor: pointer
 .recomm-list-record:active
   transform: scale(0.95)
   border: none

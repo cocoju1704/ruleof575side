@@ -36,9 +36,9 @@
       <canvas ref="pieChart">
       </canvas>
       <div v-if="this.modalData.prev_infos.length==0">
-        작년에 개설되지 않은 강의입니다.
+        <RMenuTitleBox color="red" size="535">작년에 개설되지 않은 강의입니다.</RMenuTitleBox>
       </div>
-      <div v-for="(prev, index) in this.modalData.prev_infos" style="border: solid 2px #eea900" :key="prev">
+      <div v-if="this.modalData.prev_infos.length!= 0" v-for="(prev, index) in this.modalData.prev_infos" style="border: solid 2px #eea900" :key="prev">
         <div class = "row">
           <RMenuTitleBox color="darkYellow" size="540">{{ prev.수업년도 }}년 {{ prev.수업학기 / 10 }}학기 인원 정보 {{ prev.대표교강사명 }}
             <img class="hide-button" src='hidebutton.svg' @click="isRegisteredShow[index] = !isRegisteredShow[index]" v-show="!this.isRegisteredShow[index]">
@@ -81,6 +81,8 @@
           <img class="show-button" src='showbutton.svg' @click="isRankingShow[index] = !isRankingShow[index]" v-show="this.isRankingShow[index]">
         </div>
         <div v-show="isRankingShow[index]">
+          <canvas ref="pieChart2">
+          </canvas>
           <div class="row">
             <RMenuTitleBox color="yellow" size="95">1순위</RMenuTitleBox>
             <RMenuTitleBox color="yellow" size="95">2순위</RMenuTitleBox>
@@ -178,6 +180,38 @@ export default {
       }
       return data
     },
+    setData2(){
+      let data =     
+      {
+      labels: [],
+      datasets: [{
+        data: [],
+        backgroundColor: [],
+        borderColor: [
+          'rgba(255, 255, 255, 1)',
+        ],
+        label: '인원수',
+        borderWidth: 2
+      }]
+    }
+      //PF과목
+      data.labels = [ '1순위', '2순위', '3순위', '4순위', '5순위', '6+순위' ]
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위1)
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위2)
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위3)
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위4)
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위5)
+      data.datasets[0].data.push(this.modalData.prev_infos[0].순위5초과)
+      data.datasets[0].backgroundColor =
+      [ 
+        '#097f09',
+        '#4BC204',
+        '#FEDA00',
+        '#FEA000',
+        '#FF1746',
+        '#747474']
+      return data
+    },
     setOptions(){
       let options={
         plugins: {
@@ -213,13 +247,58 @@ export default {
       }
       return options
     },
+    setOptions2(){
+      let options={
+        plugins: {
+          title: {
+            display: true,
+            text: '이 수업을 ~순위로 선택한 인원',
+            position: 'top',
+            color: '#000000',
+            font: {
+              size: 25,
+            }
+          },
+          legend: {
+            display: false,
+          },
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            color: '#FFF',
+            textAlign: 'center',
+            align: top,
+            font: {
+                size: 25,
+            },
+            formatter: function(value, ctx) {
+                return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value;
+            }
+          }
+        },
+        maintainAspectRatio : true,
+        animation: false,
+      }
+      return options
+    },
     setChart(){
-      new Chart(this.$refs.pieChart, {
-        plugins:[],
-        type:'pie',
-        data:this.setData(),
-        options:this.setOptions(),
-      })
+      if (this.modalData.lec_info.length != 0) {
+        new Chart(this.$refs.pieChart, {
+          plugins:[],
+          type:'pie',
+          data:this.setData(),
+          options:this.setOptions(),
+        })
+      }
+      if (this.modalData.prev_infos.length != 0){
+        new Chart(this.$refs.pieChart2, {
+          plugins:[],
+          type:'doughnut',
+          data:this.setData2(),
+          options:this.setOptions2(),
+        })
+      }
     }
   }
 };
@@ -265,7 +344,7 @@ export default {
   width: 100%
   height: 80%
   opacity: 0
-  background-color: black
+  background-color: $black
 
 .detail-info-row
   display: inline-flex
@@ -287,6 +366,7 @@ export default {
   left: 90%
 .show-button:hover
   transform: scale(1.1)
+  cursor: pointer
 .show-button:active
   transform: rotate(90deg) scale(0.7)
 .hide-button
@@ -298,6 +378,7 @@ export default {
   left: 90%
 .hide-button:hover
   transform: scale(1.1)
+  cursor: pointer
 .hide-button:active
   transform: rotate(-90deg) scale(0.7)
 

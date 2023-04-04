@@ -95,6 +95,7 @@ export default {
 .long-button:hover,
 .short-button:hover
     transform: scale(1.1)
+    cursor: pointer
 .long-button:active,
 .short-button:active
     transform: scale(0.95)

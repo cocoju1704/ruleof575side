@@ -1,6 +1,6 @@
 <template>
   <div class= "search-modal-record-cart">
-    <RMenuTextBox :text= this.lecData.과목명 color= "red" size= "250"></RMenuTextBox>
+    <RMenuTextBox :text= this.lecData.과목명 color= "red" size= "250"  @click="showDetails"></RMenuTextBox>
     <RMenuTextBox :text= this.lecData.대표교강사명 color= "red" size= "75"></RMenuTextBox>
     <RMenuTextBox :text= this.lecData.수업시간 color = "red" size= "100" fontsize="13"></RMenuTextBox>
     <RMenuTextBox :text= this.lecData.이수구분코드명 color = "red" size= "75"></RMenuTextBox>
@@ -35,6 +35,9 @@ export default {
     }
   },
   methods :{ 
+    async showDetails() {
+      await this.$store.dispatch("fetchLecDetails", this.lecData.수업번호);
+    },
     addLecList(){
       this.$store.commit("addLecList", this.lecData);
       this.$store.commit("setIsChanged", true)

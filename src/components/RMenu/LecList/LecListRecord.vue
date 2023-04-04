@@ -1,11 +1,7 @@
 <template>
   <div class="lec-list-record">
     <div class="lec-list-record-cart">
-      <div class = "updown-cart">
-        <img :style = "setStyle" class="up-button" src='upbutton.svg' @click = "moveUp">
-        <img :style = "setStyle" class="down-button" src='downbutton.svg' @click = "moveDown">
-      </div>
-      <RMenuTextBox class= "lec-list-classname" :text= this.lecData.과목명 :color = "this.lecData.color" size= "305" @click="showDetails"/>
+      <RMenuTextBox class= "lec-list-classname" :text= this.lecData.과목명 :color = "this.lecData.color" size= "325" @click="showDetails"/>
       <RMenuTextBox :text= this.lecData.대표교강사명 :color = "this.lecData.color" size= "75"/>
       <RMenuTextBox :text= this.lecData.수업시간 :color = "this.lecData.color" size= "100" fontsize="13"/>
       <SearchImageBox src= './addbutton.svg' :color = "this.lecData.color" @click="clickAddBtn" @mouseover="addShadowToTT" @mouseleave="clearShadowLec" v-show="this.lecData.isInTable == 0"/>
@@ -27,7 +23,13 @@ export default {
   },
   props: ["lecData"],
   computed:{
+    getGradList(){
+      this.$store.getters.getGradList()
+    },
     setStyle(){
+      if (this.lecData.color == undefined) return {
+        "--color" : "#ffffff"
+      }
       return {
         "--color" : `${this.lecData.color}`
       }
@@ -39,6 +41,7 @@ export default {
     },
     clickAddBtn() {
       if(this.lecData.isInTable == 0) {
+        alert("[" + this.lecData.영역코드명 + "] 에 +" + this.lecData.학점 + "학점 추가")
         this.addToTimeTable()
       }
       else {
@@ -150,29 +153,5 @@ export default {
   min-width: 394px
   position: relative
 
-.lec-list-classname:active
-  transform: scale(0.95)
-  border: none
-.updown-cart
-  display: flex
-  flex-direction: column
-.up-button
-  height: 20px
-  width: 20px
-  border-top: 1px white solid
-  border-bottom: 1px white solid
-  border-top-left-radius : 10px
-  background-color: var(--color)
-.down-button
-  height: 20px
-  width: 20px
-  background-color: var(--color)
-  border-bottom-left-radius : 10px
-.up-button:hover,
-.down-button:hover
-  transform: scale(1.3)
-  color: black
-.up-button:active,
-.down-button:active
-  transform: scale(0.7)
+
 </style>
