@@ -12,14 +12,14 @@
           <SearchModalRecord class= "search-result-tuple" :lecData=result v-for="result in this.resultList" :key="lec"></SearchModalRecord>
         </div>
       </div>
-      <div class = close-result v-show="this.hideResultCart == false" @click="clickSeeBtn">^</div>
+      <div class = close-result-red v-show="this.hideResultCart == false" @click="clickSeeBtn">^</div>
     </div>
     <RMenuTitleBox color="red">
         <input type="submit" class="export-pref-lec" value="저장하기" @click="exportPrefLec"/>
         내 수업목록
         <input type="submit" class="load-pref-lec" value="내 희망수업 불러오기" @click="loadPrefLec"/> 
       </RMenuTitleBox>
-      
+
     <div class = "lec-list-lower-menu">
       <LecListHead class = "lec-list-head" :lecHeadData="lecListHead"/>
         <draggable class = "drag-lec-list" :list= this.myList item-key= "수업번호">
@@ -230,15 +230,17 @@ export default {
 .export-pref-lec:hover,
 .llr:hover,
 .search-result-tuple:hover
+.close-result-red:hover
   transform: scale(1.05)
   cursor: pointer
 .load-pref-lec:active,
 .export-pref-lec:active,
 .llr:active,
 .search-result-tuple:active
+.close-result-red:active
   transform: scale(0.95)
 
-.close-result
+.close-result-red
   width: 100%
   background-color: $geraldine
   border-left: 2px white solid

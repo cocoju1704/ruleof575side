@@ -25,14 +25,14 @@
       </RMenuTitleBox>
     </div>
     <div v-for="recomms in recommList" :key="recomms">
-        <RMenuTitleBox class = "recomm-list-title" color="green" style="position: relative">
+        <RMenuTitleBox class = "recomm-list-title" color="green" style="position: relative" @click ="setIsRecommShow(recomms.영역코드명)">
           <div style="position: absolute text-align: center">
             {{recomms.영역코드명}}
           </div>
           <img class="show-button-recommend" src='showbutton.svg' @click ="setIsRecommShow(recomms.영역코드명)" v-show="recomms.isRecommShow">
-          <img class="hide-button-recommend" src='hidebutton.svg' @click ="setIsRecommShow(recomms.영역코드명)" v-show="!recomms.isRecommShow">
       </RMenuTitleBox>
       <RecommRecord :recommData = "lec" v-for="lec in recomms.수업목록" :key="lec" v-show="recomms.isRecommShow && checkLecTime(lec.수업시간)"/>
+      <div class = close-result-green @click ="setIsRecommShow(recomms.영역코드명)" v-show="recomms.isRecommShow">^</div>
     </div>
   </div>
 
@@ -224,20 +224,29 @@ export default {
   transform: scale(1.1)
   cursor: pointer
 .show-button-recommend:active
-  transform: rotate(90deg) scale(0.7)
+  transform: scale(0.7)
 
-  
-.hide-button-recommend
-  cursor: pointer
-  height: 30px
-  width: 30px
-  transition: all 0.2s ease
-  position: absolute
-  left: 92%
-.hide-button-recommend:hover
-  transform: scale(1.1)
-  cursor: pointer
-.hide-button-recommend:active
-  transform: rotate(-90deg) scale(0.7)
 
+.close-result-green
+  width: 100%
+  background-color: $green
+  border-left: 2px white solid
+  border-bottom: 4px white solid
+  height: 28px
+  text-align: center
+  color: $white
+  font-family: "Noto Sans KR", Helvetica
+.close-result-green:hover
+  transform: scale(1.05)
+  cursor: pointer
+.close-result-green:active
+  .transform: scale(0.95)
+
+.recomm-list-title
+  border-bottom: 4px solid $white
+.recomm-list-title:hover
+  transform: scale(1.05)
+  cursor: pointer
+.recomm-list-title:active
+  transform: scale(0.95)
 </style>

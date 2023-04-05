@@ -41,7 +41,6 @@ export default {
     },
     clickAddBtn() {
       if(this.lecData.isInTable == 0) {
-        alert("[" + this.lecData.영역코드명 + "] 에 +" + this.lecData.학점 + "학점 추가")
         this.addToTimeTable()
       }
       else {
@@ -97,6 +96,7 @@ export default {
       }
 
       if(!isOverlapped) {
+        alert("[" + this.lecData.영역코드명 + "] 에 +" + this.lecData.학점 + "학점 추가")
         this.lecData.isInTable = 1;
         this.$store.commit("setTimetableHackjum", this.lecData.학점)
         this.lecData['color'] = this.$store.getters.getColor
@@ -119,6 +119,7 @@ export default {
         curDay = this.lecData.요일[i]
         this.$store.commit("setUpTimeLines", curDay);
       }
+      alert("[" + this.lecData.영역코드명 + "] 에 -" + this.lecData.학점 + "학점")
     },
     addShadowToTT(){
       this.$store.commit("addShadowLec", this.lecData)
